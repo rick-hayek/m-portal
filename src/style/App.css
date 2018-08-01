@@ -33,6 +33,15 @@
   z-index: 10;
 }
 
+.header a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header a:hover {
+  text-decoration: none;
+}
+
 .header-title {
   float: left;
   margin-left: 5px;

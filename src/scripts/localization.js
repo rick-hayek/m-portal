@@ -19,6 +19,7 @@ export const SysString = new LocalizedStrings({
 
         // Navigator
         SystemOverview: "系统总览",
+        
         StrategyManagement: "策略管理",
         StrategyList: "策略列表",
         StrategyConfig: "策略配置",

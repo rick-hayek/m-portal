@@ -15,6 +15,10 @@ export function login(userName, password){
     }));
 }
 
-export function logout(userName) {
-    
+export function logout() {
+    return Q($.ajax({
+        type: 'POST',
+        url: API_BASE + '/user/logout/',
+        contentType:'application/json', 
+    }));
 }
