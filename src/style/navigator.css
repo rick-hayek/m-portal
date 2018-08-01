@@ -1,0 +1,10 @@
+.navigator {
+    position: fixed;
+    top: 55px;
+    width: 10%;
+    min-width: 180px;
+    /* background: #26334d; */
+    background: rebeccapurple;
+    color: white;
+    float: left;
+}
