@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Navbar, Nav, NavItem} from 'react-bootstrap';
+import {Nav, NavItem, Navbar, NavDropdown, MenuItem, Glyphicon, PanelGroup, Panel} from 'react-bootstrap';
 import '../../style/navigator.css';
 import Localization from '../localization';
 import ClientRoute from './route';
+
 
 const Menus = [
     {   name: Localization.SystemOverview, 
@@ -48,20 +49,54 @@ const Menus = [
 ];
 
 export default class Navigator extends Component{
+    constructor(props, context) {
+        super(props, context);
+    
+        this.handleSelect = this.handleSelect.bind(this);
+    
+        this.state = {
+          activeKey: '1'
+        };
+      }
+    
+      handleSelect(activeKey) {
+        this.setState({ activeKey });
+      }
 
     render(){
         return (
-            <div className='navigator'>
-                <Navbar>
+            <div id="sidebar-menu" className='navigator'>
+                <Navbar fluid className='sidebar' inverse >
                     <Nav>
-                        <NavItem>
-                            ME
+                        <NavItem eventKey={1}>Item 1</NavItem>
+                        <NavItem eventKey={2}>Item 2
+
                         </NavItem>
-                        <NavItem>
-                            YOU
-                        </NavItem>
+                        <NavItem eventKey={3}>Item 3</NavItem>
                     </Nav>
                 </Navbar>
+                <div className='group'>
+                <PanelGroup
+                    accordion
+                    id="accordion-controlled-example"
+                    activeKey={this.state.activeKey}
+                    onSelect={this.handleSelect}
+                    
+                >
+                    <Panel eventKey="1">
+                    <Panel.Heading>
+                        <Panel.Title toggle>Panel heading 1</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body collapsible>Panel content 1</Panel.Body>
+                    </Panel>
+                    <Panel eventKey="2">
+                    <Panel.Heading>
+                        <Panel.Title toggle>Panel heading 2</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body collapsible>Panel content 2</Panel.Body>
+                    </Panel>
+                </PanelGroup>
+                </div>
             </div>
         );
     }
