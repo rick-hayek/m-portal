@@ -1,20 +1,22 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, Glyphicon } from "react-bootstrap";
 import "../../style/login.css";
 import Localization from '../localization';
 import AuthMiddleware from './AuthMiddleware';
 import {
-    BrowserRouter as Router,
-    Route,
-    Link,
+
     Redirect,
-    withRouter
+    // withRouter
   } from "react-router-dom";
 
 import * as API from '../api/ajax';
 
+import { login } from '../actions';
+
+import { connect } from 'react-redux';
+
 // Login component
-export default class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,16 +43,17 @@ export default class Login extends React.Component {
     var self = this;
     e.preventDefault();
     console.log('try to login ...');
-
-    //AuthMiddleware.login();
+    var {dispatch} = self.props;
 
     API.login(this.state.userName, this.state.password)
         .then(function(result){
             console.log(JSON.stringify(result));
             if(result.return_code === 1) { // Success
+                dispatch(login(result.data));
+
                 self.setState({
                     redirectToReferrer: true
-                });            
+                }); 
             }
             else { // Login failed
                 self.setState({
@@ -89,8 +92,8 @@ class LoginForm extends React.Component {
     return <div className='Modal'>
                 <Logo />
                 <form onSubmit= { onSubmit }>
-                    <LabelledInput type='text' name='username' placeholder={Localization.SignInUserNameHint} onChange={onUserNameChange} />
-                    <LabelledInput type='password' name='password' placeholder={Localization.SignInPasswordHint} onChange={onPasswordChange} />
+                    <LabelledInput type='text' name='username' placeholder={Localization.SignInUserNameHint} onChange={onUserNameChange} icon='user' />
+                    <LabelledInput type='password' name='password' placeholder={Localization.SignInPasswordHint} onChange={onPasswordChange} icon='lock' />
                     <button>{Localization.SignInBtn}</button>
                 </form>
            </div>
@@ -102,7 +105,8 @@ class LabelledInput extends React.Component {
   render() {
     return <div className='Input'>
               <input type={ this.props.type } name={ this.props.name } placeholder={ this.props.placeholder } onChange={this.props.onChange} required autoComplete='false'/>
-              <label htmlFor={ this.props.name } ></label>
+              {/* <label htmlFor={ this.props.name } ></label> */}
+              <Glyphicon glyph={ this.props.icon }/>
            </div>
   }
 }
@@ -111,8 +115,14 @@ class LabelledInput extends React.Component {
 class Logo extends React.Component {
   render() {
     return <div className="logo">
-                <i className="fa fa-bug" aria-hidden="true"></i> 
-                <span>{Localization.AppName}</span>
-              </div>
+              <i className="fa fa-bug" aria-hidden="true"></i> 
+              <span>{Localization.AppName}</span>
+            </div>
   }
 }
+
+const mapStateToProps = (state) => {
+  return state.user;
+};
+
+export default connect(mapStateToProps)(Login);

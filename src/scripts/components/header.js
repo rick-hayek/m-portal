@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import {Navbar, Nav, NavItem} from 'react-bootstrap';
-import '../../style/App.css';
+import { Button, Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
+import '../../style/header.css';
 import Localization from '../localization';
 import * as API from '../api/ajax';
 
 import {
-    BrowserRouter as Router,
-    Route,
     Link,
     Redirect,
     withRouter
   } from "react-router-dom";
+
+import { connect } from 'react-redux';
 
 const SystemTitle = ()=>(
     <div className='header-title'>
@@ -35,13 +35,16 @@ class User extends Component{
     }
 
     render(){
+        let name =  this.props.user && this.props.user.user_name;
+
         return (
             <div className='header-user'>
                 <div>
-                    User Name
+                    {name}
                 </div>
                 <div>
-                    <a onClick = {this.onLogout} >Log Out</a>
+                    {/* <Button onClick={ this.onLogout } bsSize='sm'><Glyphicon glyph='log-out' /></Button> */}
+                    <a onClick = {this.onLogout} ><Glyphicon glyph='log-out' /></a>
                 </div>        
             </div>
         );
@@ -67,14 +70,23 @@ const TopNav = ()=>(
     </div>
 );
 
-export default class Header extends Component{
+class Header extends Component{
     render(){
+        let {user} = this.props;
         return (
             <div className='header'>
                 <SystemTitle />
                 <TopNav />
-                <UserInfo />
+                <UserInfo user={user} />
             </div>
         );
     }
 };
+
+const mapStateToProps = (state) => {
+    return {
+       user: state.user
+    };
+};
+
+export default connect(mapStateToProps)(Header);

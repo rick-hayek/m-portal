@@ -1,4 +1,4 @@
-const ClientRoute = {
+const RouteConfig = {
     Home: '/',
     Login: '/login',
     
@@ -24,4 +24,4 @@ const ClientRoute = {
     UserManagement: "/sys/u",
 }
 
-export default ClientRoute;
+export default RouteConfig;

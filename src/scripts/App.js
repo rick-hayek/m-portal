@@ -7,34 +7,47 @@ import Login from './components/login';
 import Navigator from './components/navigator';
 import Header from './components/header';
 import ProtectedRoute from './components/protectedRoute';
+import RouteConfig from './components/route';
+
+import * as API from './api/ajax';
 
 const Home = () => (
   <div>
-    <h2>Home</h2>
+    <a href='#' onClick={function(){API.getTaskList('');}}> Get Task</a>
   </div>
 );
 
 class MainSys extends Component{
   render(){
     return (
-      <div>
-        <Header />
-        <Navigator />
-        <Route path='/sys' Component={Home} />
+      <div className='data-area' style={{position: 'relative', top:'60px', left:'200px', overflowX: 'hidden'}}>
+        <Route exact path={RouteConfig.SystemOverview} component={Home} />
       </div>
     );
   }
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authorized: false,
+    };
+  }
 
   render() {
-
+    // If unauthorized, go to login
+    // let app = this.state.authorized
+    //   ? 
+    // else go to referrer
     return (
       <div className="App">
-        <Route path='/login' component={Login} />
-        <Route exact path='/' component={MainSys} />
+        <Route path={RouteConfig.Login} component={Login} />
+        {/* <Route exact path='/' component={MainSys} /> */}
         {/* <ProtectedRoute exact path='/' component={Home}/> */}
+        <Header />
+        <Navigator />
+        <MainSys />
       </div>
     );
   }
